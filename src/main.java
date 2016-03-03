@@ -27,28 +27,39 @@ public class main{
         }*/
 
     String msg = "";
-
-        try (
-                ServerSocket s = new ServerSocket(1337);
-                Socket client = s.accept();
-                PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        ) {
-            //jesli wszystko ok mozna dzialac na obiektach
-            //String msg;
-            while ((msg = in.readLine()) != null) {
-                System.out.println(msg);
-                if (msg.equals("bye"))
-                    break;
-            }
-
-
+    ServerSocket server = null;
+        try {
+            server = new ServerSocket(1337);
         } catch (Exception e) {
             System.out.println(e);
         }
 
+        while( true )
+        {
+            Socket client = null;
+            try {
+                client = server.accept();
+                if( client.getInetAddress().equals("1.1.1.1.1" ) )
+                    break;
+                ClientServiceThread clientThread = new ClientServiceThread( client );
+                clientThread.start();
+            }catch( Exception e )
+            {
 
-        System.out.println("Gilberto");
+            }
+
+
+        }
+        //clean up after exit
+        try{
+            server.close();
+        }catch( Exception e )
+        {
+
+        }
+
+
+        //System.out.println("Gilberto");
 
     }
 }
