@@ -2,15 +2,18 @@
  * Created by kaaml on 23.02.16.
  */
 
-import com.sun.corba.se.spi.activation.Server;
+;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class main{
+
     public static void main(String[] args) {
         int portNumber = 1337;
-
+        ArrayList<ClientServiceThread> connectedClients = new ArrayList<ClientServiceThread>();
         /*ServerSocket serverSocket = null;
         try{
             serverSocket = new ServerSocket( portNumber );
@@ -41,7 +44,8 @@ public class main{
                 client = server.accept();
                 if( client.getInetAddress().equals("1.1.1.1.1" ) )
                     break;
-                ClientServiceThread clientThread = new ClientServiceThread( client );
+                ClientServiceThread clientThread = new ClientServiceThread( client, connectedClients );
+                connectedClients.add( clientThread );
                 clientThread.start();
             }catch( Exception e )
             {
