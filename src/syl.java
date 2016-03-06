@@ -17,7 +17,6 @@ public class syl extends JFrame {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //lab.setText("kuwrwa mac dziala");
                 lab.setText( textArea1.getText() );
             }
         });
@@ -29,6 +28,7 @@ public class syl extends JFrame {
         });
     }
 
+
     public static void main( String[] args )
     {
         JFrame frame = new JFrame("syl");
@@ -37,5 +37,7 @@ public class syl extends JFrame {
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         frame.pack();
         frame.setVisible(true );
+
+
     }
 }

@@ -17,6 +17,21 @@ public class ClientServiceThread extends Thread {
     ArrayList<ClientServiceThread> cli = null;
     private PrintWriter outWrit = null;
 
+    private enum Command {
+        NICK() {
+            @Override
+            public void run() {
+                System.out.println("NICK(1,1)");
+            }
+        },
+        PASS(){
+            @Override
+            public void run() {
+                System.out.println("PASS(1,4)");
+            }
+        };
+        public abstract void run();
+    }
     public ClientServiceThread(Socket conn, ArrayList<ClientServiceThread> thr){
         clientSocket = conn;
         cli = thr;
@@ -54,6 +69,17 @@ public class ClientServiceThread extends Thread {
     {
         outWrit.write( msg );
         outWrit.flush();
+    }
+    public void ParseCommand( String line )
+    {
+        System.out.println( "Parsing line: [" + line + " ] " );
+
+        if( line.startsWith( ":" ) )
+        {
+            String[] tokens = line.split( " ", 2 );
+            Command c = Command.valueOf( tokens[0] );
+            c.run();
+        }
     }
 
 }
