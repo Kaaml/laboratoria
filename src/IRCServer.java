@@ -1,6 +1,3 @@
-import com.sun.corba.se.spi.activation.Server;
-
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,9 +10,44 @@ import java.util.HashMap;
 public class IRCServer {
     private String serverName = "Kaaml servers";
     private int serverPort = 1337;      //default is 1337
+    private String serverPassword = "";
 
     HashMap<String, ClientServiceThread> clientsOnChannels = new HashMap<>();
     ArrayList<ClientServiceThread> connectedClients = new ArrayList<ClientServiceThread>();
+    HashMap<String, ClientServiceThread> usersOnServer = new HashMap<>();
+
+
+    public class UserExist extends  Exception{
+        public UserExist(String exc)
+        {
+            super(exc);
+        }
+        public String getMessage()
+        {
+            return super.getMessage();
+        }
+    }
+    //czy to tu powinno być?
+    public class Channel
+    {
+        private ArrayList<ClientServiceThread> channelMembers = new ArrayList<>();
+        private String name;
+        private String topic;
+
+        public void SendToAllMembers( String msg, ClientServiceThread user )
+        {
+            for( ClientServiceThread i : channelMembers)
+                if( user != i )
+                    i.send( msg);
+        }
+        public void MemberJoin( ClientServiceThread user )
+        {
+            //join msg
+            //SendToAllMembers( );
+            channelMembers.add( user );
+        }
+
+    }
 
     public IRCServer( String ServerName, int Port ){
         serverName = ServerName;
@@ -28,7 +60,6 @@ public class IRCServer {
 
         }
     }
-
 
     public void Start()
     {
@@ -47,12 +78,13 @@ public class IRCServer {
                 client = server.accept();
                 if( client.getInetAddress().equals("1.1.1.1.1" ) )
                     break;
-                ClientServiceThread clientThread = new ClientServiceThread( client, connectedClients );
+                ClientServiceThread clientThread = new ClientServiceThread( client, this );
                 connectedClients.add( clientThread );
                 clientThread.start();
             }catch( Exception e )
             {
-
+                System.out.println( e );
+                System.out.println( e.getStackTrace() );
             }
 
 
@@ -62,7 +94,20 @@ public class IRCServer {
             server.close();
         }catch( Exception e )
         {
-
+            System.out.println( e.getStackTrace() );
+        }
+    }
+    public void RegisterClientOnServer(String clientName, ClientServiceThread client ) throws UserExist
+    {
+        //
+        ClientServiceThread cl = usersOnServer.get( clientName );
+        if( cl == null )
+        {
+            usersOnServer.put( clientName, client );
+        }else
+        {
+            throw new UserExist( "User exist on channel" );
+            //throw UserNameExist
         }
     }
     public void RegisterClientOnChannel( String chanelName, ClientServiceThread client )
@@ -71,8 +116,18 @@ public class IRCServer {
     }
     public void CleanUp()
     {
-
-
         System.out.println( "Server [ " + serverName + " ] has turned off");
+    }
+    public boolean IsCorrectPassword( String password )
+    {
+        if( serverPassword.equals( "" ) )
+        {
+            System.out.println( "server bez hasła" );
+            return true;
+        }else if( serverPassword.equals(password) )
+        {
+            return true;
+        }
+        return false;
     }
 }

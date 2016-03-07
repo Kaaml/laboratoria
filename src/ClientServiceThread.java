@@ -1,5 +1,3 @@
-import com.sun.security.ntlm.Client;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -12,29 +10,32 @@ import java.util.ArrayList;
 
 //package ClientServiceThread;
 public class ClientServiceThread extends Thread {
-    Thread activeThread = null;
+    //Thread activeThread = null;
     Socket clientSocket = null;
     ArrayList<ClientServiceThread> cli = null;
     private PrintWriter outWrit = null;
-
+    String clientName;
+    IRCServer mainServer = null;
     private enum Command {
         NICK() {
             @Override
-            public void run() {
-                System.out.println("NICK(1,1)");
+            public void run(String[] msg, IRCServer server, ClientServiceThread own) {
+                System.out.println(msg);
+                own.RegisterClient( msg[0] );
             }
         },
         PASS(){
             @Override
-            public void run() {
+            public void run(String[] msg, IRCServer server,  ClientServiceThread own)  {
                 System.out.println("PASS(1,4)");
+                own.PassToServer(msg[1] );
             }
         };
-        public abstract void run();
+        public abstract void run(String[] msg, IRCServer server, ClientServiceThread own) ;
     }
-    public ClientServiceThread(Socket conn, ArrayList<ClientServiceThread> thr){
+    public ClientServiceThread(Socket conn, IRCServer server){
         clientSocket = conn;
-        cli = thr;
+        mainServer = server;
         System.out.println( "THREAD[ " + this.getId() + " ] has started" );
     }
 
@@ -53,7 +54,8 @@ public class ClientServiceThread extends Thread {
                     break;
                 if( msg.equalsIgnoreCase("send" ) )
                     for( ClientServiceThread i : cli )
-                        i.send("gowno");
+                        i.send("Alle user msg");
+                ParseCommand( msg );
 
             }
         }catch( Exception e )
@@ -74,11 +76,47 @@ public class ClientServiceThread extends Thread {
     {
         System.out.println( "Parsing line: [" + line + " ] " );
 
-        if( line.startsWith( ":" ) )
-        {
+
             String[] tokens = line.split( " ", 2 );
-            Command c = Command.valueOf( tokens[0] );
-            c.run();
+            if( tokens[0].equalsIgnoreCase("pass" ) ){
+                Command x = Command.valueOf( tokens[0] );
+                x.run( tokens, mainServer, this );
+            }
+            Command c = Command.valueOf( tokens[1] );
+           // c.run();
+
+    }
+    public void RegisterClient(String name)
+    {
+        clientName = name;
+        try {
+            mainServer.RegisterClientOnServer(name, this);
+            send( "User registred as " + name );
+        }catch( IRCServer.UserExist e )
+        {
+            try{
+                mainServer.RegisterClientOnServer( name+"_" , this );
+                send( "User registred as " + name + "_" );
+            }catch( IRCServer.UserExist e2 )
+            {
+                System.out.println( "User already exist on server" );
+                send( "Nick already exist on server" );
+            }
+        }
+
+    }
+    public void PassToServer( String password )
+    {
+        if( ! mainServer.IsCorrectPassword( password ) )
+        {
+            send( "invalid password to server. You are disconnected!" );
+            try {
+                clientSocket.close();
+            }catch( Exception e )
+            {
+                System.out.println( e.getStackTrace() );
+            }
+            this.stop();
         }
     }
 
