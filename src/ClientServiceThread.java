@@ -75,15 +75,26 @@ public class ClientServiceThread extends Thread {
     public void ParseCommand( String line )
     {
         System.out.println( "Parsing line: [" + line + " ] " );
-
-
+        // [:]<kto> <polecenie> <parametry>
+        // user joing #channel1 chanel2
+        // user register nickname password
+        // pass username password
+        // user usei real_informations
+        // user msg target msg_
+        // user quit msg
+        // user kick who why
+        // and more sooon ;)s
             String[] tokens = line.split( " ", 2 );
             if( tokens[0].equalsIgnoreCase("pass" ) ){
-                Command x = Command.valueOf( tokens[0] );
-                x.run( tokens, mainServer, this );
+                String[] argsOfCommand = tokens[2].split(" " );
+                Command x = Command.valueOf( tokens[1] );
+                if( x == null ){
+                    send( "command not found" );
+                    return;
+                }else {
+                    x.run(argsOfCommand, mainServer, this);
+                }
             }
-            Command c = Command.valueOf( tokens[1] );
-           // c.run();
 
     }
     public void RegisterClient(String name)
@@ -100,7 +111,8 @@ public class ClientServiceThread extends Thread {
             }catch( IRCServer.UserExist e2 )
             {
                 System.out.println( "User already exist on server" );
-                send( "Nick already exist on server" );
+                send( "ERR_NICKNAMEINUSE" );
+                //send( "Nick already exist on server" );
             }
         }
 
