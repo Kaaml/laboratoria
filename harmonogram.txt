@@ -1,0 +1,38 @@
+*** Harmonogram prac Java ***
+
+1* Zapoznanie się z maszyną wirtualną Javy, dostępnymi bibliotekami oraz składnią jezyka Java i komponentami Swing i AWT.
+   - Zaprojektowanie funkcjonalności aplikacji. Rozdzielenie zadań pomiędzy serwer a aplikacje kliencką.
+2* Server: Zapoznanie się z komunikacją na Socketach, implementacja wielowątkowości do obsługi klientów na serwerze. 
+   - Implementacja komend klienta ( PASS, JOIN, NICK )
+3* Server: Implementacja następnych komend od użytkownika.
+   - Obsługa rejestracji użytkowników do bazy danych. 
+   - Zapis logów servera do pliku.
+   - Archiwizacja chatu do bazy danych**
+4* Server: Testowanie aplikacji serwerowej.
+   Client: Zaprojektowanie GUI oraz odpowiednie zaprogramowanie jego komponentów( akcje guzików itp ) [wzorzec obserwator]
+   - Obsługa logowania i rejestracji użytkownika
+5* Server: Poprawki w aplikacji serwerowej (jeżeli zaistnieje taka konieczność)
+   Client: Obsługa wielu kanałów jednocześnie
+   - wyświetlanie użytkowników kanału w osobnym komponencie
+
+
+//*-*-
+1* Swing:
+   - Projekt aplikacji klienckiej(GUI)
+2* Komunikacja sieciowa
+   - komunikacja oparta na socketach przygotowanie protokołu(klient-serwer)
+3* Wielowątkowość
+   - logika serwera
+   - każdy użytkownik na osobnym wątku
+   - operacje atomowe do synchronizacji (mutexy)
+4* Zapis i odczyt z plików
+   - zapis logów serwera do pliku
+5* Bazy danych
+   - rejestracja klientów
+   - profile w aplikacji klienckiej
+6* Wzorce projektowe
+   - obserwator
+
+
+** - Pomysł do zrealizowania jeśli wystarczy czasu.
+
