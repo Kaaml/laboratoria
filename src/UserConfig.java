@@ -1,13 +1,9 @@
 import java.io.File;
 import java.io.IOException;
-import java.io.SyncFailedException;
-import java.lang.reflect.Array;
 import java.util.*;
-
 import org.ini4j.Config;
 import org.ini4j.Ini;
-import org.ini4j.MultiMap;
-import org.ini4j.Profile.Section;
+
 /**
  * Created by kaaml on 25.03.16.
  */
@@ -66,26 +62,42 @@ public class UserConfig {
         System.out.println("Stored ini file with configuration" );
     }
 
-    public void SetUserName( String name ){
+    public void etUserName( String name ){
         userName = name;
     }
-    public void SetUserPassword( String pass ){
+    public String getUserName(){
+        return userName;
+    }
+    public void setUserPassword( String pass ){
         password = pass;
     }
-    public void SetServerName( String server ) {
+    public String getUserPassword(){
+        return password;
+    }
+    public void setServerName( String server ) {
         serverAdress = server;
     }
-    public void SetServerPassword( String servPass ){
+    public String getServerName(){
+        return serverAdress;
+    }
+    public void setServerPassword( String servPass ){
         passwordToServer = servPass;
     }
-    public void StoreSettings( boolean val ){
+    public String getServerPassword(){
+        return passwordToServer;
+    }
+    public void storeSettings( boolean val ){
         storeSettings = val;
     }
-    public boolean StoreSettings(){
+    public boolean storeSettings(){
         return storeSettings;
     }
-    private void addChanelName( String chName ){
+    public void addChanelName(String chName){
         chanelNames.add( chName );
     }
+    public ArrayList<String> getChanelNames(){
+        return chanelNames;
+    }
+
 
 }
