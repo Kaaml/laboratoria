@@ -6,6 +6,8 @@ import org.ini4j.Ini;
 
 /**
  * Created by kaaml on 25.03.16.
+ *
+ * Globally class to store information about user
  */
 @SuppressWarnings("ALL")
 public class UserConfig {
