@@ -21,20 +21,8 @@ public class login {
     private boolean saveSettings;
     private UserConfig userConfig;
 
-    public login( UserConfig config ){
-        userConfig = config;
 
-        JFrame frame = new JFrame("login" );
-        frame.setContentPane( new login( userConfig ).root );
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-        //frame.setMinimumSize( new Dimension(600, 500 ));
-        frame.pack();
-        frame.setVisible(true );
-        frame.setAlwaysOnTop(true );
-        addLoginButtonListner();
-    }
-
-    private void addLoginButtonListner(){
+    private void addLoginButtonListner() {
 
         loginButton.addActionListener(new ActionListener() {
             @Override
@@ -44,13 +32,24 @@ public class login {
                 serverName = serverText.getText();
                 saveSettings = saveSettingsRadio.isSelected();
 
-                if( login.isEmpty() && serverName.isEmpty() ){
-                    System.out.println( "login i server name jest puste");
+                if (login.isEmpty() && serverName.isEmpty()) {
+                    System.out.println("login i server name jest puste");
                 }
             }
         });
-
-
-
     }
+    public void invoke( UserConfig c ){
+        userConfig = c;
+        JFrame frame = new JFrame("login" );
+        frame.setContentPane( new login().root );
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
+        //frame.setMinimumSize( new Dimension(600, 500 ));
+        frame.pack();
+        frame.setVisible(true );
+        frame.setAlwaysOnTop(true );
+        addLoginButtonListner();
+    }
+
+
 }
+

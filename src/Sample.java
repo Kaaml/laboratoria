@@ -99,7 +99,7 @@ public class Sample extends JFrame{
     public static void main(String[] args){
 
         String homeDirectory = System.getProperty( "user.home" );
-            System.out.println( "Home directory is: " + homeDirectory + File.separator );
+            System.out.println( "Home directory is: " + homeDirectory + File.separator + "settings.ini" );
         File settingsFile = new File(  homeDirectory + File.separator + "settings.ini" );
         UserConfig userConfig = new UserConfig();
         if( settingsFile.exists() && !settingsFile.isDirectory()  ){
@@ -110,9 +110,17 @@ public class Sample extends JFrame{
                 System.out.println( e.getMessage() );
             }
         }else {
-            login loginFrame = new login( userConfig );
+            login loginFrame = new login();
+            loginFrame.invoke( userConfig );
         }
+        File f2 = new File( homeDirectory + "/set.ini" );
 
+
+        try {
+            userConfig.saveConfigurationToFile(f2);
+        }catch( IOException e ){
+            System.out.println("cos poszlo nie tak" );
+        }
 
         JFrame frame = new JFrame("Sample" );
         frame.setContentPane( new Sample().rootPanel );
