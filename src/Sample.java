@@ -109,13 +109,9 @@ public class Sample extends JFrame {
                 System.out.println(e.getMessage());
             }
         } else {
-            login loginFrame = new login();
-            //loginFrame.init();
-            //loginFrame.invoke( new UserConfig() );
-            //loginFrame.setUserConfig( userConfig );
-            ///userConfig = loginFrame.GetConfig();
+            login loginFrame = new login(userConfig);
         }
-        File f2 = new File(homeDirectory + "/set.ini");
+        File f2 = new File(homeDirectory + "/settings.ini");
 
 
         try {

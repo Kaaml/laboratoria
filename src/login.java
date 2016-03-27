@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 
 /**
  * Created by kaaml on 22.03.16.
@@ -17,15 +16,16 @@ public class login extends JFrame {
     private JLabel loginLabel;
     private JLabel passwordLabel;
     private JPasswordField serverPasswordText;
-    private JFrame frame;
+
 
     private boolean saveSettings;
     private UserConfig userConfig;
 
 
-    public login() {
+    public login( UserConfig userCfg) {
 
-        init2();
+        userConfig = userCfg;
+        init();
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -36,8 +36,6 @@ public class login extends JFrame {
                 String serverName = serverText.getText();
                 saveSettings = saveSettingsRadio.isSelected();
 
-                //co tauj się dzieje?
-                userConfig = new UserConfig();
                 if (serverName.isEmpty()) {
                     serverText.setBackground(Color.red);
                     serverText.grabFocus();
@@ -53,62 +51,18 @@ public class login extends JFrame {
                     userConfig.setUserPassword(passw);
                     userConfig.storeSettings(saveSettings);
                     //TODO: zrobić to lepiej
+
                     setVisible(false);
+                    dispose();
                     System.out.println("tutaj okno logowania powinno sie zamknac");
-
-                    //frame.dispatchEvent( new WindowEvent( frame, WindowEvent.WINDOW_CLOSING ) );
-
                 }
             }
         });
 
-    }
-
-    private void addLoginButtonListner() {
-
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.out.print("Login button clicked");
-                String login = loginText.getText();
-                String passw = passwordText.getPassword().toString();
-                String serverName = serverText.getText();
-                saveSettings = saveSettingsRadio.isSelected();
-
-                // TODO: focus on text field when missing
-                if (login.isEmpty()) {
-                    setVisible(true);
-                    loginText.setBackground(Color.red);
-                    //loginText.requestFocusInWindow();
-                }
-                if (serverName.isEmpty()) {
-
-                    serverText.setBackground(Color.red);
-                    pack();
-                    setVisible(true);
-                    //serverText.requestFocus();
-
-                }
-            }
-        });
     }
 
     public void init() {
-        //erConfig = c;
-        frame = new JFrame("login");
-        frame.setContentPane(new login().root);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setMinimumSize( new Dimension(600, 500 ));
-        frame.pack();
-        frame.setVisible(true);
-        frame.setAlwaysOnTop(true);
-
-        //addLoginButtonListner();
-    }
-
-    public void init2() {
         this.setContentPane(this.root);
-        //this.setDefaultCloseOperation();
         this.pack();
         this.setVisible(true);
         this.setAlwaysOnTop(true);
