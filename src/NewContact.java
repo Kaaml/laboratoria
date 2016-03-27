@@ -42,7 +42,7 @@ public class NewContact extends JFrame {
                 panel.setLayout(new GridLayout(1, 1));
                 panel.add(filler);
 
-                tabbedPane1.addTab( "kupa", panel );
+                tabbedPane1.addTab("kupa", panel);
 
 
             }
@@ -51,11 +51,13 @@ public class NewContact extends JFrame {
         card.addComponentListener(new ComponentAdapter() {
         });
     }
-        public static void main( String[] args){
-            JFrame frame = new JFrame("NewContact" );
-            frame.setContentPane( new NewContact().newContactRootPanel );
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-            frame.pack();
-            frame.setVisible(true );
-        }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("NewContact");
+        frame.setContentPane(new NewContact().newContactRootPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
 }

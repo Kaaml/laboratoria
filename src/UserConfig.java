@@ -15,7 +15,7 @@ public class UserConfig {
     private String password;
     private String serverAdress;
     private String passwordToServer;
-    private boolean storeSettings = true;
+    private boolean storeSettings = false;
     private ArrayList<String> chanelNames = new ArrayList<>();
 
 
@@ -64,7 +64,7 @@ public class UserConfig {
         System.out.println("Stored ini file with configuration" );
     }
 
-    public void etUserName( String name ){
+    public void setUserName( String name ){
         userName = name;
     }
     public String getUserName(){
