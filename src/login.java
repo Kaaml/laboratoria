@@ -22,7 +22,7 @@ public class login extends JFrame {
     private UserConfig userConfig;
 
 
-    public login( UserConfig userCfg) {
+    public login(UserConfig userCfg) {
 
         userConfig = userCfg;
         init();
@@ -50,7 +50,7 @@ public class login extends JFrame {
                     userConfig.setUserName(login);
                     userConfig.setUserPassword(passw);
                     userConfig.storeSettings(saveSettings);
-                    //TODO: zrobić to lepiej
+
 
                     setVisible(false);
                     dispose();
