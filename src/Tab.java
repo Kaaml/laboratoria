@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by kaaml on 28.03.16.
@@ -37,8 +39,6 @@ public class Tab {
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new BorderLayout(0, 0));*/
 
-
-        //
        final JPanel panel2 = new JPanel();
         panel2.setLayout(new BorderLayout(0, 0));
         tabbedPane1.addTab("Untitled", panel2);
@@ -47,6 +47,16 @@ public class Tab {
         panel2.add(panel3, BorderLayout.SOUTH);
         textField1 = new JTextField();
         textField1.setText("");
+        textField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if( e.getKeyCode() == KeyEvent.VK_ENTER ){
+                    sdfsafTextArea.append( textField1.getText() + "\n" );
+                    textField1.setText("");
+                }
+            }
+        });
         panel3.add(textField1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         button1 = new JButton();
         button1.setText("Button");
