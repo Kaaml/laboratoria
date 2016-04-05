@@ -1,8 +1,8 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -25,7 +25,8 @@ public class Sample extends JFrame {
     private JList list2;
     private JTextArea sdfsafTextArea;
     private JScrollBar scrollBar1;
-
+    private Conection con;
+    private File settingsFile;
 
     public Sample() {
         this.setContentPane(this.rootPanel);
@@ -53,7 +54,7 @@ public class Sample extends JFrame {
         //delete after test ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Tab[] abc = new Tab[3];
         abc[0] = CreatePanel();
-        abc[1] = CreatePanel();
+       // abc[1] = CreatePanel();
         //abc[1].setSomething();
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         this.pack();
@@ -69,29 +70,61 @@ public class Sample extends JFrame {
     public void mainFunc() {
         String homeDirectory = System.getProperty("user.home");
         System.out.println("Home directory is: " + homeDirectory + File.separator + "settings.ini");
-        File settingsFile = new File(homeDirectory + File.separator + "settings.ini");
+        settingsFile = new File(homeDirectory + File.separator + "settings.ini");
         UserConfig userConfig = new UserConfig();
 
         if (settingsFile.exists() && !settingsFile.isDirectory()) {
             try {
                 userConfig.readConfigFromFile(settingsFile);
+                exe( userConfig );
             } catch (IOException e) {
                 System.out.println("Cannot read from config file. Exception handling");
                 System.out.println(e.getMessage());
             }
         } else {
-            login loginFrame = new login(userConfig);
+            login loginFrame = new login(userConfig, this);
         }
-        File f2 = new File(homeDirectory + "/settings.ini");
+
+    }
+    public void exe( UserConfig userConfig){
+        String[] servName = userConfig.getServerName().split( ":",2 );
+        String host = servName[0];
+        int port = 3733;
+        if( servName.length == 2 )
+            port = Integer.parseInt( servName[1]);
+        System.out.println( "Connection parametrs" );
+        System.out.println( "HOST: " + host );
+        System.out.println( "PORT: " + port );
+        System.out.println( "USER: " + userConfig.getUserName() );
+        con = new Conection( host, userConfig, port);
+        Runnable r1 = () -> {
+            try {
+                con.listen( this );
+            }catch( Exception e ){
+                System.out.println( e.getMessage() );
+            }
+        };
+
 
 
         try {
-            userConfig.saveConfigurationToFile(f2);
+            userConfig.saveConfigurationToFile(settingsFile);
         } catch (IOException e) {
             System.out.println("cos poszlo nie tak");
         }
 
-
+    }
+    public void HandleMessageFromServer( String msg ){
+        //tutaj cała logika
+        String[] tags = msg.split(" " );
+        switch (tags[0] ){
+            case "dupa":
+                System.out.println("dupa" );
+                break;
+        }
+    }
+    public void HandleMessageFromForm( String msg, Tab tab ){
+        //tutaj jakaś dupa
     }
 }
 

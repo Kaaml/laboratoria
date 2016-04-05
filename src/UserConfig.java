@@ -15,7 +15,7 @@ public class UserConfig {
     private String password;
     private String serverAdress;
     private String passwordToServer;
-    private boolean storeSettings = false;
+    private boolean storeSettings = true;
     private ArrayList<String> chanelNames = new ArrayList<>();
 
 
@@ -46,7 +46,10 @@ public class UserConfig {
             chs.replaceAll("\\s", "" );
     }
     public void saveConfigurationToFile( File f ) throws IOException{
-
+        if( !storeSettings ){
+            //System.out.println( "")
+            return;
+        }
         f.createNewFile();
         Ini ini = new Ini( f );
         ini.put( "user", "user", userName );

@@ -15,8 +15,9 @@ public class Tab {
     private JPanel dsafas;
     private JList list1;
     private JTextArea textArea1;
+    private Sample sampleForm;
 
-    Tab(JTabbedPane tabbedPane1, String tabName ){
+    Tab(JTabbedPane tabbedPane1, String tabName, Sample sample ){
 
 
     /*    Bla = new JPanel();
@@ -38,7 +39,7 @@ public class Tab {
         panel1.add(textArea1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new BorderLayout(0, 0));*/
-
+        sampleForm = sample;
        final JPanel panel2 = new JPanel();
         panel2.setLayout(new BorderLayout(0, 0));
         tabbedPane1.addTab("Untitled", panel2);
@@ -52,8 +53,9 @@ public class Tab {
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
                 if( e.getKeyCode() == KeyEvent.VK_ENTER ){
-                    sdfsafTextArea.append( textField1.getText() + "\n" );
+                    //sdfsafTextArea.append( textField1.getText() + "\n" );
                     textField1.setText("");
+                    //sampleForm.
                 }
             }
         });
@@ -74,6 +76,10 @@ public class Tab {
         panel2.add(panel5, BorderLayout.CENTER);
         sdfsafTextArea = new JTextArea();
         sdfsafTextArea.setText("sdfsaf");
+        //lets try it
+
+
+
         panel5.add(sdfsafTextArea, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
 
     }

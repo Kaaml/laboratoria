@@ -16,13 +16,13 @@ public class login extends JFrame {
     private JLabel loginLabel;
     private JLabel passwordLabel;
     private JPasswordField serverPasswordText;
-
+    private boolean ok = false;
 
     private boolean saveSettings;
     private UserConfig userConfig;
 
 
-    public login(UserConfig userCfg) {
+    public login(UserConfig userCfg, final Sample app) {
 
         userConfig = userCfg;
         init();
@@ -50,8 +50,8 @@ public class login extends JFrame {
                     userConfig.setUserName(login);
                     userConfig.setUserPassword(passw);
                     userConfig.storeSettings(saveSettings);
-
-
+                    app.exe( userConfig );
+                    ok = true;
                     setVisible(false);
                     dispose();
                     System.out.println("tutaj okno logowania powinno sie zamknac");
@@ -60,6 +60,8 @@ public class login extends JFrame {
         });
 
     }
+
+
 
     public void init() {
         this.setContentPane(this.root);

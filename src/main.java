@@ -6,6 +6,5 @@ public class main {
         Sample app = new Sample();
         app.mainFunc();
 
-
     }
 }
