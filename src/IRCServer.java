@@ -1,6 +1,13 @@
+import sun.org.mozilla.javascript.json.JsonParser;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+    import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,7 +18,7 @@ public class IRCServer {
     private String serverName = "Kaaml servers";
     private int serverPort = 1337;      //default is 1337
     private String serverPassword = "";
-
+    private boolean isRunning = false;
     HashMap<String, ClientServiceThread> clientsOnChannels = new HashMap<>();
     ArrayList<ClientServiceThread> connectedClients = new ArrayList<ClientServiceThread>();
     HashMap<String, ClientServiceThread> usersOnServer = new HashMap<>();
@@ -43,7 +50,7 @@ public class IRCServer {
         public void MemberJoin( ClientServiceThread user )
         {
             //join msg
-            //SendToAllMembers( );
+            SendToAllMembers( "User: " + user.getName() + " has joined", user  );
             channelMembers.add( user );
         }
 
@@ -60,10 +67,24 @@ public class IRCServer {
 
         }
     }
-
-    public void Start()
+    public IRCServer( String configFile )
     {
+        FileInputStream file = null;
+        try {
+             file = new FileInputStream(configFile);
 
+        }catch( Exception e )
+        {
+            System.out.println( e.getMessage() );
+        }
+       // while( String s = file.toString())
+
+    }
+
+    public void Start() throws Exception
+    {
+        if( isRunning )
+            throw new Exception("server is running" );
         ServerSocket server = null;
         try {
             server = new ServerSocket(1337);

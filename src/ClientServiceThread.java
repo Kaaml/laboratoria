@@ -30,6 +30,17 @@ public class ClientServiceThread extends Thread {
                 System.out.println("PASS(1,4)");
                 own.PassToServer(msg[1] );
             }
+        },
+        REG(){
+            @Override
+            public void run(String[] msg, IRCServer server, ClientServiceThread own ){
+                try{
+                    server.RegisterClientOnServer(msg[0], own );
+                }catch( Exception e)
+                {
+                    System.out.println( e.getMessage() );
+                }
+            }
         };
         public abstract void run(String[] msg, IRCServer server, ClientServiceThread own) ;
     }
@@ -76,18 +87,18 @@ public class ClientServiceThread extends Thread {
     {
         System.out.println( "Parsing line: [" + line + " ] " );
         // [:]<kto> <polecenie> <parametry>
-        // user joing #channel1 chanel2
+        // user MSG target message
+        // user joing #channel1
         // user register nickname password
         // pass username password
         // user usei real_informations
         // user msg target msg_
         // user quit msg
-        // user kick who why
         // and more sooon ;)s
             String[] tokens = line.split( " ", 2 );
             if( tokens[0].equalsIgnoreCase("pass" ) ){
                 String[] argsOfCommand = tokens[2].split(" " );
-                Command x = Command.valueOf( tokens[1] );
+                Command x = Command.valueOf( tokens[0] );
                 if( x == null ){
                     send( "command not found" );
                     return;

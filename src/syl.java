@@ -12,6 +12,8 @@ public class syl extends JFrame {
     private JTextArea textArea1;
     private JComboBox comboBox1;
     private JLabel lab;
+    private JTabbedPane tabbedPane1;
+    private JList list1;
 
     public syl() {
         sendButton.addActionListener(new ActionListener() {

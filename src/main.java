@@ -6,7 +6,12 @@
 public class main{
     public static void main(String[] args) {
        IRCServer ircServer = new IRCServer("kaaml server's on localhost", 1337 );
-        ircServer.Start();
+        try {
+            ircServer.Start();
+        }catch( Exception e )
+        {
+            System.out.println( e.getMessage() );
+        }
         ircServer.CleanUp();
 
     }
