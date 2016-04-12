@@ -47,24 +47,24 @@ public class Conection {
             }
         }
     }
-    public void login( String user, String pw ) {
+    public synchronized void  login( String user, String pw ) {
         String msg = "PASS " + user + " " + pw + " ";
         socketOut.println( msg );
     }
     //target can be user or chanel
-    public void sendMessage( String target, String message ) {
+    public synchronized void sendMessage( String target, String message ) {
         String msg = "MSG " + target + " " + message;
         socketOut.println( msg  );
     }
-    public void joinToChannel( String chanelName ) {
+    public synchronized void joinToChannel( String chanelName ) {
         String msg = "JOIN " + chanelName;
         socketOut.println(msg);
     }
-    public void quitMessage() {
+    public synchronized void quitMessage() {
         String msg = "QUIT";
         socketOut.println(msg);
     }
-    public void SendRequest( String msg ){
+    public synchronized void SendRequest( String msg ){
         socketOut.println( msg );
         socketOut.flush();
     }
