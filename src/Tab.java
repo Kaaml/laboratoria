@@ -16,6 +16,7 @@ public class Tab {
     private JList list1;
     private JTextArea textArea1;
     private Sample sampleForm;
+    private Tab currentTab;
 
     Tab(JTabbedPane tabbedPane1, String tabName, Sample sample ){
 
@@ -39,6 +40,7 @@ public class Tab {
         panel1.add(textArea1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new BorderLayout(0, 0));*/
+        currentTab = this;
         sampleForm = sample;
        final JPanel panel2 = new JPanel();
         panel2.setLayout(new BorderLayout(0, 0));
@@ -53,9 +55,9 @@ public class Tab {
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
                 if( e.getKeyCode() == KeyEvent.VK_ENTER ){
-                    //sdfsafTextArea.append( textField1.getText() + "\n" );
+                    //sdfsafTextArea.append( textField1.getText() + "\n" )
+                    sampleForm.handleMessageFromForm( textField1.getText(), currentTab );
                     textField1.setText("");
-                    //sampleForm.
                 }
             }
         });

@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Created by kaaml on 21.03.16.
@@ -27,6 +28,7 @@ public class Sample extends JFrame {
     private JScrollBar scrollBar1;
     private Conection con;
     private File settingsFile;
+    private HashMap<String, Tab > activeTabs = new HashMap<>();
 
     public Sample() {
         this.setContentPane(this.rootPanel);
@@ -52,8 +54,9 @@ public class Sample extends JFrame {
         menu.add(exit);
         this.setJMenuBar(menuBar);
         //delete after test ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        Tab[] abc = new Tab[3];
-        abc[0] = CreatePanel();
+        //Tab[] abc = new Tab[3];
+        activeTabs.put( "#default", createTab("defa") );
+        //abc[0] = createTab();
        // abc[1] = CreatePanel();
         //abc[1].setSomething();
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -61,8 +64,9 @@ public class Sample extends JFrame {
         this.setVisible(true);
     }
 
-    private Tab CreatePanel() {
-        Tab nowa = new Tab(tabbedPane1, "jakas_nazwa");
+    private Tab createTab(String name) {
+        Tab nowa = new Tab(tabbedPane1, name, this);
+        activeTabs.put(name, nowa );
         return nowa;
     }
 
@@ -89,7 +93,7 @@ public class Sample extends JFrame {
     public void exe( UserConfig userConfig){
         String[] servName = userConfig.getServerName().split( ":",2 );
         String host = servName[0];
-        int port = 3733;
+        int port = 3733;        //default port
         if( servName.length == 2 )
             port = Integer.parseInt( servName[1]);
         System.out.println( "Connection parametrs" );
@@ -114,17 +118,49 @@ public class Sample extends JFrame {
         }
 
     }
-    public void HandleMessageFromServer( String msg ){
+    public void handleMessageFromServer( String msg ){
         //tutaj cała logika
-        String[] tags = msg.split(" " );
+        String[] tags = msg.split(" ",2 );
         switch (tags[0] ){
-            case "dupa":
-                System.out.println("dupa" );
+            case "ERROR":
+                System.out.println("Last operation ERROR" );
+                //TODO inform user about it status bar or etc
                 break;
+            case "JOINED_TO":
+                createTab( tags[1] );
+                break;
+            case "MSG":
+                String[] tokens = tags[1].split(" ", 2 );
+                Tab tab = activeTabs.get( tokens[0] );
+                if( tab == null ){
+                    tab = activeTabs.get( "#default" );
+                }
+                //tab.appendMessage( tokens[1] );
+                break;
+            default:
+                System.out.println( "Undefined response from server'" );
         }
     }
-    public void HandleMessageFromForm( String msg, Tab tab ){
-        //tutaj jakaś dupa
+    public void handleMessageFromForm( String msg, Tab tab ){
+        String[] tags = msg.split( " ", 2  );   //ie: /join #chanelname
+        switch (tags[0].toLowerCase() ){
+            case "/join" :
+                //send msg to server and create new tab
+                con.joinToChannel( tags[1] );
+                break;
+            case "/msg":
+                //jak wyżej
+                String[] tokens = tags[1].split(" ", 2  );
+                con.sendMessage( tokens[0], tokens[1] );
+                break;
+            case "/quit":
+                this.setVisible( false );
+                this.dispose();
+                System.exit(0);
+                break;
+            default:
+                System.out.println( "bledy w wiadomosci z taba");
+        }
     }
 }
 

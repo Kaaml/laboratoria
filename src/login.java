@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 /**
  * Created by kaaml on 22.03.16.
@@ -50,7 +49,7 @@ public class login extends JFrame {
                     userConfig.setUserName(login);
                     userConfig.setUserPassword(passw);
                     userConfig.storeSettings(saveSettings);
-                    app.exe( userConfig );
+                    app.exe(userConfig);
                     ok = true;
                     setVisible(false);
                     dispose();
@@ -59,7 +58,38 @@ public class login extends JFrame {
             }
         });
 
+        serverText.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                String text = serverText.getText();
+                if ( text.isEmpty()) {
+                    serverText.setBackground(Color.green);
+                } else {
+                    String[] tokens = text.split( ":", 2 );
+                    if( tokens.length ==2 ){
+                        if( !tokens[1].matches( "d+") ){
+                            serverText.setBackground( Color.red );
+                        }
+                    }
+                    if( !tokens[0].matches( "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$")){
+                        serverText.setBackground( Color.red );
+                    }
+
+                    //serverText.setBackground(Color.DARK_GRAY);
+                }
+            }
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                serverText.setBackground( Color.white );
+            }
+        });
+
+        loginText.addComponentListener(new ComponentAdapter() {
+        });
     }
+
 
 
 
