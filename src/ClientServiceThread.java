@@ -3,6 +3,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Timer;
 
 /**
  * Created by kaaml on 03.03.16.
@@ -16,6 +17,9 @@ public class ClientServiceThread extends Thread {
     private PrintWriter outWrit = null;
     String clientName;
     IRCServer mainServer = null;
+    boolean isBlocked = false;
+    long spamTimer = 0;
+
     private enum Command {
         NICK() {
             @Override
@@ -30,6 +34,17 @@ public class ClientServiceThread extends Thread {
                 System.out.println("PASS(1,4)");
                 own.PassToServer(msg[1] );
             }
+
+        },
+        SEND(){
+            @Override
+            public void run(String[] msg, IRCServer server,  ClientServiceThread own)  {
+                System.out.println("SEND(1,4)");
+                ChatFilter cf = new ChatFilter( msg[1] );
+                msg[1] = cf.getCensoredMessage();
+                own.PassToServer(msg[1] );
+            }
+
         };
         public abstract void run(String[] msg, IRCServer server, ClientServiceThread own) ;
     }
@@ -49,6 +64,10 @@ public class ClientServiceThread extends Thread {
             outWrit = new PrintWriter( clientSocket.getOutputStream() );
             String msg;
             while ((msg = in.readLine()) != null) {
+                long dt = spamTimer - System.currentTimeMillis();
+                if( dt < 1500 ){
+                    isBlocked = true;
+                }
                 System.out.println(msg);
                 if (msg.equals("exit"))
                     break;
@@ -69,6 +88,8 @@ public class ClientServiceThread extends Thread {
     }
     public void send( String msg )
     {
+        if( isBlocked)
+            return;
         outWrit.write( msg );
         outWrit.flush();
     }

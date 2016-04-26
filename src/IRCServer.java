@@ -1,7 +1,13 @@
+import javax.xml.crypto.Data;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -52,6 +58,12 @@ public class IRCServer {
     public IRCServer( String ServerName, int Port ){
         serverName = ServerName;
         serverPort = Port;
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss" ).format(new Date());
+        try{
+            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream("serverlog" + currentTime +".log" ) );
+        }catch(Exception e ){
+            System.out.println( e.getStackTrace() );
+        }
         try {
             InetAddress adr = InetAddress.getLocalHost();
             System.out.println( "Server [ " + serverName + "@" + adr.getHostAddress() + " ] has started" );
