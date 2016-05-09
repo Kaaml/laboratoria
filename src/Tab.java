@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by kaaml on 28.03.16.
@@ -21,25 +23,6 @@ public class Tab {
     Tab(JTabbedPane tabbedPane1, String tabName, Sample sample ){
 
 
-    /*    Bla = new JPanel();
-        Bla.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPane1.addTab(tabName, Bla);
-        dsafas = new JPanel();
-        dsafas.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        Bla.add(dsafas, new com.intellij.uiDesigner.core.GridConstraints(
-                0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        dsafas.setBorder(BorderFactory.createTitledBorder("List of users"));
-        list1 = new JList();
-        dsafas.add(list1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        Bla.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        textArea1 = new JTextArea();
-        textArea1.setEditable(false);
-        textArea1.setEnabled(false);
-        panel1.add(textArea1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new BorderLayout(0, 0));*/
         currentTab = this;
         sampleForm = sample;
        final JPanel panel2 = new JPanel();
@@ -80,7 +63,7 @@ public class Tab {
         sdfsafTextArea.setText("sdfsaf");
         //lets try it
 
-
+        initAutosugestion();
 
         panel5.add(sdfsafTextArea, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
 
@@ -89,5 +72,22 @@ public class Tab {
         textArea1.setText( "dupa dupa" );
         textArea1.append( "kupa kupa\n");
         textArea1.append( "dodajmy po kupie siu sius :-)");
+    }
+    private void initAutosugestion(){
+        String[] suggestWords = {
+                "\\quit", "\\msg", "\\exit", "\\join"
+        };
+        //get root frame
+        JFrame frame = (JFrame)SwingUtilities.getRoot(sampleForm);
+        AutoSuggestor autoSuggestor = new AutoSuggestor(textField1, frame, new ArrayList( Arrays.asList( suggestWords) ), Color.WHITE.brighter(), Color.BLUE, Color.RED, 0.75f) {
+            @Override
+            boolean wordTyped(String typedWord) {
+                //System.out.println(typedWord);
+                return super.wordTyped(typedWord);//checks for a match in dictionary and returns true or false if found or not
+            }
+        };
+
+
+
     }
 }

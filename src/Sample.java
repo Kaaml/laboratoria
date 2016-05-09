@@ -142,24 +142,30 @@ public class Sample extends JFrame {
         }
     }
     public void handleMessageFromForm( String msg, Tab tab ){
-        String[] tags = msg.split( " ", 2  );   //ie: /join #chanelname
-        switch (tags[0].toLowerCase() ){
-            case "/join" :
-                //send msg to server and create new tab
-                con.joinToChannel( tags[1] );
-                break;
-            case "/msg":
-                //jak wyżej
-                String[] tokens = tags[1].split(" ", 2  );
-                con.sendMessage( tokens[0], tokens[1] );
-                break;
-            case "/quit":
-                this.setVisible( false );
-                this.dispose();
-                System.exit(0);
-                break;
-            default:
-                System.out.println( "bledy w wiadomosci z taba");
+        msg = msg.trim();
+        if( msg.charAt(0 )  != '/' ){
+            con.sendMessage( "default", msg );
+
+        }else {
+            String[] tags = msg.split(" ", 2);   //ie: /join #chanelname
+            switch (tags[0].toLowerCase()) {
+                case "/join":
+                    //send msg to server and create new tab
+                    con.joinToChannel(tags[1]);
+                    break;
+                case "/msg":
+                    //jak wyżej
+                    String[] tokens = tags[1].split(" ", 2);
+                    con.sendMessage(tokens[0], tokens[1]);
+                    break;
+                case "/quit":
+                    this.setVisible(false);
+                    this.dispose();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("bledy w wiadomosci z taba");
+            }
         }
     }
 }
