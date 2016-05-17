@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by kaaml on 21.03.16.
@@ -29,6 +29,7 @@ public class Sample extends JFrame {
     private Conection con;
     private File settingsFile;
     private HashMap<String, Tab > activeTabs = new HashMap<>();
+    FileTransfer fileToSend = null;
 
     public Sample() {
         this.setContentPane(this.rootPanel);
@@ -41,18 +42,29 @@ public class Sample extends JFrame {
         JMenuItem menuItem = new JMenuItem("Login", KeyEvent.VK_T);
         JMenuItem exit = new JMenuItem("Exit", KeyEvent.VK_ESCAPE);
 
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.exit(0);
-            }
-        });
+        exit.addActionListener(actionEvent -> System.exit(0));
         menuItem.getAccessibleContext().setAccessibleDescription(
                 "Login");
 
         menu.add(menuItem);
         menu.add(exit);
+        //dodanie wysyłania pliku w menu
+        JMenuItem sendFile = new JMenuItem( "Upload File" );
+        sendFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooseFile = new JFileChooser();
+                int retVal = chooseFile.showOpenDialog( Sample.this );
+                if (retVal == JFileChooser.APPROVE_OPTION) {
+                    File file = chooseFile.getSelectedFile();
+                    fileToSend =  new FileTransfer( file ) ;
+                }
+            }
+        });
+        menu.add( sendFile );
+        menu.add( menu );
         this.setJMenuBar(menuBar);
+
         //delete after test ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //Tab[] abc = new Tab[3];
         activeTabs.put( "#default", createTab("defa") );
@@ -137,6 +149,12 @@ public class Sample extends JFrame {
                 }
                 //tab.appendMessage( tokens[1] );
                 break;
+            case "FILEU":
+                fileToSend.startU( tags[1]);
+                break;
+            case "FILED":
+                fileToSend.startD( tags[1] );
+                break;
             default:
                 System.out.println( "Undefined response from server'" );
         }
@@ -168,6 +186,7 @@ public class Sample extends JFrame {
             }
         }
     }
+
 }
 
 

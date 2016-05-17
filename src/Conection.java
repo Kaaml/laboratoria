@@ -36,10 +36,10 @@ public class Conection {
 
         String responseFromServer = null;
         while ((responseFromServer = socketIn.readLine()) != null) {
-
+            sample.handleMessageFromServer( responseFromServer );
             switch (responseFromServer) {
-                case "dupa":
-                    System.out.println("no to dupa");
+                case "FILE":
+                    System.out.println("Upload file");
                     break;
                 default:
                     System.out.println("Nie znana komenda servera");
@@ -66,6 +66,10 @@ public class Conection {
     }
     public synchronized void SendRequest( String msg ){
         socketOut.println( msg );
+        socketOut.flush();
+    }
+    public synchronized void sendFileRequest(){
+        socketOut.println( "FILE UPLOAD" );
         socketOut.flush();
     }
 }

@@ -69,21 +69,22 @@ public class Tab {
 
     }
     public void setSomething(){
-        textArea1.setText( "dupa dupa" );
-        textArea1.append( "kupa kupa\n");
-        textArea1.append( "dodajmy po kupie siu sius :-)");
+        textArea1.setText( "asdfgg" );
+        textArea1.append( "hjjkkiij\n");
+        textArea1.append( "dodajmy po ***** | ***** :-)");
     }
     private void initAutosugestion(){
         String[] suggestWords = {
-                "\\quit", "\\msg", "\\exit", "\\join"
+                "/quit", "/msg", "/exit", "/join", "/clear"
         };
         //get root frame
         JFrame frame = (JFrame)SwingUtilities.getRoot(sampleForm);
-        AutoSuggestor autoSuggestor = new AutoSuggestor(textField1, frame, new ArrayList( Arrays.asList( suggestWords) ), Color.WHITE.brighter(), Color.BLUE, Color.RED, 0.75f) {
+        AutoSuggestor autoSuggestor = new AutoSuggestor(textField1,
+                frame, new ArrayList( Arrays.asList( suggestWords) ), Color.WHITE.brighter(), Color.BLACK, Color.GRAY, 0.75f) {
             @Override
             boolean wordTyped(String typedWord) {
                 //System.out.println(typedWord);
-                return super.wordTyped(typedWord);//checks for a match in dictionary and returns true or false if found or not
+                return super.wordTyped(typedWord);
             }
         };
 

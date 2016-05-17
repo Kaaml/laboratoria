@@ -121,7 +121,7 @@ class AutoSuggestor {
                 } else {//only a single suggestion was given
                     autoSuggestionPopUpWindow.setVisible(false);
                     setFocusToTextField();
-                    checkForAndShowSuggestions();//fire method as if document listener change occured and fired it
+                    checkForAndShowSuggestions();   //fire method as if document listener change occured and fired it
                 }
             }
         });
@@ -147,9 +147,8 @@ class AutoSuggestor {
     private void checkForAndShowSuggestions() {
         typedWord = getCurrentlyTypedWord();
 
-        suggestionsPanel.removeAll();//remove previos words/jlabels that were added
+        suggestionsPanel.removeAll();   //remove older suggestions
 
-        //used to calcualte size of JWindow as new Jlabels are added
         tW = 0;
         tH = 0;
 
@@ -190,7 +189,6 @@ class AutoSuggestor {
     }
 
     private void calculatePopUpWindowSize(JLabel label) {
-        //so we can size the JWindow correctly
         if (tW < label.getPreferredSize().width) {
             tW = label.getPreferredSize().width;
         }
@@ -206,21 +204,21 @@ class AutoSuggestor {
         int windowX = 0;
         int windowY = 0;
 
-        if (textComp instanceof JTextField) {//calculate x and y for JWindow at bottom of JTextField
+        if (textComp instanceof JTextField) {
             windowX = container.getX() + textComp.getX() + 5;
             if (suggestionsPanel.getHeight() > autoSuggestionPopUpWindow.getMinimumSize().height) {
                 windowY = container.getY() + textComp.getY() + textComp.getHeight() + autoSuggestionPopUpWindow.getMinimumSize().height;
             } else {
                 windowY = container.getY() + textComp.getY() + textComp.getHeight() + autoSuggestionPopUpWindow.getHeight();
             }
-        } else {//calculate x and y for JWindow on any JTextComponent using the carets position
+        } else {
             Rectangle rect = null;
             try {
-                rect = textComp.getUI().modelToView(textComp, textComp.getCaret().getDot());//get carets position
+                rect = textComp.getUI().modelToView(textComp, textComp.getCaret().getDot());
             } catch (BadLocationException ex) {
                 ex.printStackTrace();
             }
-            String arr[] = { "adafd", "asdfa", "fadsf"};
+            //String arr[] = { "adafd", "asdfa", "fadsf"};
 
             windowX = (int) (rect.getX() + 15);
             windowY = (int) (rect.getY() + (rect.getHeight() * 3));
